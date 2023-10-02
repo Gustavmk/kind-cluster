@@ -1,1 +1,0 @@
-{"Modules":[{"Key":"","Source":"","Dir":"."},{"Key":"helm_config","Source":"git::ssh://git@github.com/ohkillsh/killsh-module-kubernetes-config.git//helm?ref=main","Dir":".terraform/modules/helm_config/helm"}]}
