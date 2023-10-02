@@ -2,24 +2,34 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: foo-dev
+  name: foo-dev-review-frontend
   namespace: argocd
 spec:
   generators:
-  - git:
-      directories:
-      - path: apps/dev/*
-      repoURL: git@github.com:camptocamp/argocd-project-foo-apps.git
-      revision: main
+  - pullRequest:
+      github:
+        owner: Gustavmk
+        repo: azure-voting-app-dotnet # This is the application source code repo
+        tokenRef:
+          secretName: github-token
+          key: token
+        labels:
+        - deploy # label on PR that trigger review app
   template:
     metadata:
-      name: foo-dev-{{path.basename}} # sub folder name
+      name: 'foo-dev-frontend-{{branch}}-{{number}}'
     spec:
       source:
-        path: '{{path}}' # full path
-        repoURL: git@github.com:camptocamp/argocd-project-foo-apps.git
+        repoURL: git@github.com:gustavmk/kind-cluster.git
         targetRevision: main
+        path: apps/dev/frontend
+        helm:
+          parameters:
+          - name: "image.tag"
+            value: "{{branch}}-{{head_sha}}" # override of the image tag
+          - name: "ingress.prefix"
+            value: "{{branch}}" # add a prefix to the URL 
       project: default
       destination:
-        namespace: foo-dev
         server: https://kubernetes.default.svc
+        namespace: foo-dev
