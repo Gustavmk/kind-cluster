@@ -9,7 +9,7 @@ spec:
   - pullRequest:
       github:
         owner: Gustavmk
-        repo: azure-voting-app-dotnet # This is the application source code repo
+        repo: kind-cluster # This is the application source code repo
         tokenRef:
           secretName: github-token
           key: token
@@ -17,18 +17,12 @@ spec:
         - deploy # label on PR that trigger review app
   template:
     metadata:
-      name: 'foo-dev-frontend-{{branch}}-{{number}}'
+      name: 'voting-app-dev-frontend-{{branch}}-{{number}}'
     spec:
       source:
         repoURL: git@github.com:gustavmk/kind-cluster.git
         targetRevision: main
         path: apps/dev/frontend
-        helm:
-          parameters:
-          - name: "image.tag"
-            value: "{{branch}}-{{head_sha}}" # override of the image tag
-          - name: "ingress.prefix"
-            value: "{{branch}}" # add a prefix to the URL 
       project: default
       destination:
         server: https://kubernetes.default.svc
