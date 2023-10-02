@@ -1,0 +1,25 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: foo-dev
+  namespace: argocd
+spec:
+  generators:
+  - git:
+      directories:
+      - path: apps/dev/*
+      repoURL: git@github.com:camptocamp/argocd-project-foo-apps.git
+      revision: main
+  template:
+    metadata:
+      name: foo-dev-{{path.basename}} # sub folder name
+    spec:
+      source:
+        path: '{{path}}' # full path
+        repoURL: git@github.com:camptocamp/argocd-project-foo-apps.git
+        targetRevision: main
+      project: default
+      destination:
+        namespace: foo-dev
+        server: https://kubernetes.default.svc
