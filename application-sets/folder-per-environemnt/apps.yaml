@@ -9,15 +9,15 @@ spec:
   - git:
       directories:
       - path: apps/dev/*
-      repoURL: git@github.com:camptocamp/argocd-project-foo-apps.git
+      repoURL: git@github.com:gustavmk/argocd-project-foo-apps.git
       revision: main
   template:
     metadata:
       name: foo-dev-{{path.basename}} # sub folder name
     spec:
       source:
-        path: '{{path}}' # full path
-        repoURL: git@github.com:camptocamp/argocd-project-foo-apps.git
+        path: '{{path}}' # full pathkind-cluster
+        repoURL: git@github.com:gustavmk/kind-cluster.git
         targetRevision: main
       project: default
       destination:
