@@ -21,13 +21,13 @@ spec:
       name: 'voting-app-dev-frontend-{{branch}}-{{number}}'
     spec:
       source:
-        repoURL: https://github.com/gustavmk/kind-cluster.git
-        targetRevision: main
+        repoURL: 'https://github.com/gustavmk/kind-cluster.git'
+        targetRevision: '{{head_sha}}'
         path: apps/dev/frontend
       project: default
       destination:
         server: https://kubernetes.default.svc
-        namespace: 'review-app{-{branch}}-{{number}}'
+        namespace: 'review-app-{{branch}}-{{number}}'
       syncPolicy:
         automated: {}
         syncOptions:
