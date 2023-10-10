@@ -7,6 +7,7 @@ metadata:
 spec:
   generators:
   - pullRequest:
+      requeueAfterSeconds: 1800
       github:
         owner: Gustavmk
         repo: kind-cluster # This is the application source code repo
@@ -20,10 +21,14 @@ spec:
       name: 'voting-app-dev-frontend-{{branch}}-{{number}}'
     spec:
       source:
-        repoURL: git@github.com:gustavmk/kind-cluster.git
+        repoURL: https://github.com/gustavmk/kind-cluster.git
         targetRevision: main
         path: apps/dev/frontend
       project: default
       destination:
         server: https://kubernetes.default.svc
-        namespace: foo-dev
+        namespace: 'review-app{-{branch}}-{{number}}'
+      syncPolicy:
+        automated: {}
+        syncOptions:
+          - CreateNamespace=true
