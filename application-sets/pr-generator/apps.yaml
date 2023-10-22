@@ -7,27 +7,25 @@ metadata:
 spec:
   generators:
   - pullRequest:
-      requeueAfterSeconds: 1800
+      requeueAfterSeconds: 30
       github:
         owner: Gustavmk
         repo: kind-cluster # This is the application source code repo
         tokenRef:
           secretName: github-token
           key: token
-        labels:
-        - deploy # label on PR that trigger review app
   template:
     metadata:
-      name: 'voting-app-dev-frontend-{{branch}}-{{number}}'
+      name: 'review-vote-app-branch-{{branch}}-pr-{{number}}'
     spec:
       source:
         repoURL: 'https://github.com/gustavmk/kind-cluster.git'
         targetRevision: '{{head_sha}}'
-        path: apps/dev/frontend
+        path: apps/tests/vote-app
       project: default
       destination:
         server: https://kubernetes.default.svc
-        namespace: 'review-app-{{branch}}-{{number}}'
+        namespace: 'review-vote-app-branch-{{branch}}-pr-{{number}}'
       syncPolicy:
         automated: {}
         syncOptions:
