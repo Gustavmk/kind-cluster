@@ -7,29 +7,26 @@ metadata:
 spec:
   generators:
   - pullRequest:
+      requeueAfterSeconds: 30
       github:
         owner: Gustavmk
-        repo: azure-voting-app-dotnet # This is the application source code repo
+        repo: kind-cluster # This is the application source code repo
         tokenRef:
           secretName: github-token
           key: token
-        labels:
-        - deploy # label on PR that trigger review app
   template:
     metadata:
-      name: 'foo-dev-frontend-{{branch}}-{{number}}'
+      name: 'review-vote-app-branch-{{branch}}-pr-{{number}}'
     spec:
       source:
-        repoURL: git@github.com:gustavmk/kind-cluster.git
-        targetRevision: main
-        path: apps/dev/frontend
-        helm:
-          parameters:
-          - name: "image.tag"
-            value: "{{branch}}-{{head_sha}}" # override of the image tag
-          - name: "ingress.prefix"
-            value: "{{branch}}" # add a prefix to the URL 
+        repoURL: 'https://github.com/gustavmk/kind-cluster.git'
+        targetRevision: '{{head_sha}}'
+        path: apps/tests/vote-app
       project: default
       destination:
         server: https://kubernetes.default.svc
-        namespace: foo-dev
+        namespace: 'review-vote-app-branch-{{branch}}-pr-{{number}}'
+      syncPolicy:
+        automated: {}
+        syncOptions:
+          - CreateNamespace=true

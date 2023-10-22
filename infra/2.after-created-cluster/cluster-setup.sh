@@ -1,6 +1,10 @@
 kubectl create namespace argocd
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/applicationset/v0.4.1/manifests/install.yaml
 
+
+# argocd login --skip-test-tls 127.0.0.1:43489
+# argocd repo add git@github.com:gustavmk/kind-cluster.git --ssh-private-key-path ~/.ssh/id_rsa
 
 # first add our custom repo to your local helm repositories
 helm repo add headlamp https://headlamp-k8s.github.io/headlamp/

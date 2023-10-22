@@ -5,5 +5,3 @@ kind delete clusters gmk8s
 kind create cluster --config=cluster.yaml
 
 kubectl cluster-info --context kind-gmk8s 
-
-
